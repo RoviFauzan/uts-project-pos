@@ -24,6 +24,28 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `role`
+-- (PINDAHKAN KE SINI AGAR DIBUAT TERLEBIH DAHULU)
+--
+
+CREATE TABLE `role` (
+  `id_role` int(11) NOT NULL,
+  `nama_role` varchar(50) NOT NULL,
+  `deskripsi` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`id_role`, `nama_role`, `deskripsi`) VALUES
+(1, 'Owner', 'Pemilik usaha dengan akses penuh ke seluruh sistem'),
+(2, 'Admin', 'Administrator dengan akses ke manajemen sistem'),
+(3, 'Kasir', 'Petugas kasir dengan akses terbatas untuk transaksi');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `admin`
 --
 
@@ -68,38 +90,6 @@ INSERT INTO `barang` (`id_barang`, `harga_beli`, `harga_jual`, `stok`, `nama_bar
 (2, 2000000.00, 2500000.00, 2, 'Laptop Toshiba F', 'Merk B'),
 (3, 1800000.00, 2300000.00, 7, 'Laptop Dell', 'Merk C'),
 (12, 5000000.00, 5500000.00, 4, 'Macbook Air', 'Apple');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `detail_transaksi`
---
-
-CREATE TABLE `detail_transaksi` (
-  `id_detail_transaksi` int(11) NOT NULL,
-  `id_transaksi` int(11) NOT NULL,
-  `id_barang` int(11) NOT NULL,
-  `qty` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `detail_transaksi`
---
-
-INSERT INTO `detail_transaksi` (`id_detail_transaksi`, `id_transaksi`, `id_barang`, `qty`) VALUES
-(1, 1, 1, 2),
-(2, 1, 2, 1),
-(19, 26, 1, 1),
-(20, 26, 3, 1),
-(21, 27, 1, 1),
-(22, 27, 3, 2),
-(23, 28, 1, 1),
-(25, 30, 1, 1),
-(26, 30, 1, 2),
-(27, 31, 1, 1),
-(28, 31, 3, 2),
-(29, 32, 2, 1),
-(30, 33, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -159,48 +149,57 @@ INSERT INTO `transaksi` (`id_transaksi`, `id_pelanggan`, `tanggal`, `total_pembe
 -- --------------------------------------------------------
 
 --
--- Table structure for table `role`
+-- Table structure for table `detail_transaksi`
 --
 
-CREATE TABLE `role` (
-  `id_role` int(11) NOT NULL,
-  `nama_role` varchar(50) NOT NULL,
-  `deskripsi` text DEFAULT NULL
+CREATE TABLE `detail_transaksi` (
+  `id_detail_transaksi` int(11) NOT NULL,
+  `id_transaksi` int(11) NOT NULL,
+  `id_barang` int(11) NOT NULL,
+  `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `role`
+-- Dumping data for table `detail_transaksi`
 --
 
-INSERT INTO `role` (`id_role`, `nama_role`, `deskripsi`) VALUES
-(1, 'Owner', 'Pemilik usaha dengan akses penuh ke seluruh sistem'),
-(2, 'Admin', 'Administrator dengan akses ke manajemen sistem'),
-(3, 'Kasir', 'Petugas kasir dengan akses terbatas untuk transaksi');
+INSERT INTO `detail_transaksi` (`id_detail_transaksi`, `id_transaksi`, `id_barang`, `qty`) VALUES
+(1, 1, 1, 2),
+(2, 1, 2, 1),
+(19, 26, 1, 1),
+(20, 26, 3, 1),
+(21, 27, 1, 1),
+(22, 27, 3, 2),
+(23, 28, 1, 1),
+(25, 30, 1, 1),
+(26, 30, 1, 2),
+(27, 31, 1, 1),
+(28, 31, 3, 2),
+(29, 32, 2, 1),
+(30, 33, 1, 2);
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id_role`);
+
+--
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`),
-  ADD CONSTRAINT `fk_admin_role` FOREIGN KEY (`id_role`) REFERENCES `role` (`id_role`);
+  ADD KEY `fk_admin_role` (`id_role`);
 
 --
 -- Indexes for table `barang`
 --
 ALTER TABLE `barang`
   ADD PRIMARY KEY (`id_barang`);
-
---
--- Indexes for table `detail_transaksi`
---
-ALTER TABLE `detail_transaksi`
-  ADD PRIMARY KEY (`id_detail_transaksi`),
-  ADD KEY `id_transaksi` (`id_transaksi`),
-  ADD KEY `id_barang` (`id_barang`);
 
 --
 -- Indexes for table `pelanggan`
@@ -216,14 +215,22 @@ ALTER TABLE `transaksi`
   ADD KEY `fk_id_pelanggan` (`id_pelanggan`);
 
 --
--- Indexes for table `role`
+-- Indexes for table `detail_transaksi`
 --
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`id_role`);
+ALTER TABLE `detail_transaksi`
+  ADD PRIMARY KEY (`id_detail_transaksi`),
+  ADD KEY `id_transaksi` (`id_transaksi`),
+  ADD KEY `id_barang` (`id_barang`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `role`
+--
+ALTER TABLE `role`
+  MODIFY `id_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `admin`
@@ -238,12 +245,6 @@ ALTER TABLE `barang`
   MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `detail_transaksi`
---
-ALTER TABLE `detail_transaksi`
-  MODIFY `id_detail_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-
---
 -- AUTO_INCREMENT for table `pelanggan`
 --
 ALTER TABLE `pelanggan`
@@ -256,14 +257,20 @@ ALTER TABLE `transaksi`
   MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
--- AUTO_INCREMENT for table `role`
+-- AUTO_INCREMENT for table `detail_transaksi`
 --
-ALTER TABLE `role`
-  MODIFY `id_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `detail_transaksi`
+  MODIFY `id_detail_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `admin`
+--
+ALTER TABLE `admin`
+  ADD CONSTRAINT `fk_admin_role` FOREIGN KEY (`id_role`) REFERENCES `role` (`id_role`);
 
 --
 -- Constraints for table `detail_transaksi`
