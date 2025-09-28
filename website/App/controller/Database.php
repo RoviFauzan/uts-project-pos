@@ -1,7 +1,7 @@
 <?php
 // Pengaturan koneksi untuk lingkungan Docker
 $host     = "db";
-$user     = "crud_user";
+$user     = "root";
 $pass     = "12345678"; // Pastikan ini sama dengan di docker-compose.yml
 $database = "crud_db";
 
