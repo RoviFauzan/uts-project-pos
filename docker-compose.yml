@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # Layanan Database
+  db:
+    image: mariadb:10.6
+    container_name: db_mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: crud_db
+      MYSQL_USER: rozan
+      MYSQL_PASSWORD: 12345678
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  # Layanan Web Server
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: uts-web-app
+    container_name: web_apache
+    restart: unless-stopped
+    volumes:
+      - ./website:/var/www/html
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # Layanan Monitoring
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime_kuma
+    restart: unless-stopped
+    volumes:
+      - uptime_kuma_data:/app/data
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+
+# Definisi Volumes untuk Persistensi Data
+volumes:
+  mariadb_data:
+  uptime_kuma_data:
+
+# Definisi Jaringan Kustom
+networks:
+  app-network:
+    driver: bridge
