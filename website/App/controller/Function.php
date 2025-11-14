@@ -161,6 +161,7 @@ function tambahAdmin($username, $password, $nama_admin, $id_role = 2) {
     
     $md5Password = md5($password);
     
+    // Let MySQL auto-generate id_admin
     $query = mysqli_query($conn, "INSERT INTO admin (username, password, nama_admin, id_role) VALUES ('$username', '$md5Password', '$nama_admin', '$id_role')");
     
     if($query) {
@@ -299,7 +300,7 @@ function getDataAdmin() {
 function tambahBarang($nama_barang, $merk, $harga_beli, $harga_jual, $stok){
     include "Database.php";
 
-    // Masukkan data ke database
+    // Let MySQL auto-generate id_barang
     $query_insert = mysqli_query($conn, "INSERT INTO barang (nama_barang, merk, harga_beli, harga_jual, stok) VALUES ('$nama_barang', '$merk', '$harga_beli', '$harga_jual', '$stok')");
     if (!$query_insert) {
         die("Query error: " . mysqli_error($conn));
@@ -369,7 +370,7 @@ function countRowsBarang(){
 function tambahPelanggan($nama_pelanggan, $no_hp, $alamat, $email){
     include "Database.php";
 
-    // Masukkan data ke database
+    // Let MySQL auto-generate id_pelanggan
     $query_insert = mysqli_query($conn, "INSERT INTO pelanggan (nama_pelanggan, no_hp, alamat, email) VALUES ('$nama_pelanggan', '$no_hp', '$alamat', '$email')");
     if (!$query_insert) {
         die("Query error: " . mysqli_error($conn));
